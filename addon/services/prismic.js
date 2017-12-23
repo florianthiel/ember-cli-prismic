@@ -5,23 +5,26 @@ import RSVP from 'rsvp';
 
 export default Service.extend({
 
-  _getPrismicApi() {
+  api() {
     return new RSVP.Promise((resolve) => {
       const config = Ember.getOwner(this).resolveRegistration('config:environment');
-      const _prismicApi = this.get('prismicApi');
-      if (_prismicApi) {
-        resolve(_prismicApi);
+      const { apiEndpoint, accessToken } = config.prismic;
+
+      let url = `${apiEndpoint}`;
+      if (accessToken) {
+        url += `?access_token=${accessToken}`;
       }
-      fetch(config.prismic.apiEndpoint).then(response => {
+
+      fetch(url).then(response => {
         this.set('prismicApi', response);
         resolve(response);
       });
     });
   },
 
-  masterRef() {
+  master() {
     return new RSVP.Promise((resolve) => {
-      this._getPrismicApi().then(api => {
+      this.api().then(api => {
         const masterRef = api.refs.find(ref => ref.isMasterRef).ref;
         resolve(masterRef);
       });

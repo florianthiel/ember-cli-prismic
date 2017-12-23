@@ -7,7 +7,7 @@ export default Route.extend({
   prismic: service(),
 
   model() {
-    return this.get('prismic').masterRef().then(ref => {
+    return this.get('prismic').master().then(ref => {
       const apiEndpoint = config.prismic.apiEndpoint;
       const r = `ref=${ref}`;
       const q = 'q=[[at(document.type, "blog-post")]]';
