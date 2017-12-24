@@ -1,5 +1,10 @@
-{{#each model.results as |document|}}
+<h2>Blog posts ({{model.results.length}})</h2>
+{{#each model.results as |post|}}
   <div>
-    {{as-text document.data.title}}
+    {{as-text post.data.title}}
+    by
+    {{#each post.data.authors as |fetched_resource|}}
+      {{as-text fetched_resource.author.data.complete_name}}
+    {{/each}}
   </div>
 {{/each}}

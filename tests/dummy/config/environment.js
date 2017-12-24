@@ -25,7 +25,14 @@ module.exports = function(environment) {
 
     prismic: {
       apiEndpoint: 'https://pix-website.cdn.prismic.io/api/v2',
-      accessToken: 'MC5XajdUSUNzQUFOTjFyRnVS.VnY377-977-9PSnvv71f77-977-977-977-9ahwuBe-_ve-_vUjvv73vv71ECid6d--_ve-_vUV0Rg'
+      accessToken: 'MC5XajdUSUNzQUFOTjFyRnVS.VnY377-977-9PSnvv71f77-977-977-977-9ahwuBe-_ve-_vUjvv73vv71ECid6d--_ve-_vUV0Rg',
+      cacheOptions: {
+        // LRU-cache options, cf. https://github.com/isaacs/node-lru-cache#options
+        max: 500,
+        maxAge: 1000 * 60 * 60,
+        // node-cache
+        stdTTL: 1000 * 60 * 60
+      }
     }
   };
 
