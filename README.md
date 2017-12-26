@@ -1,18 +1,12 @@
-
 # ember-cli-prismic
 
-This README outlines the details of collaborating on this Ember addon.
+An ember-cli addon for using [prismic.io](https://prismic.io) in Ember.js applications.
 
-## What it does
+This addon provides :
 
-This addon does:
-
-* Provide `prismic` service in order to query a prismic.io repository
-* Provide `as-text` and `as-html` template helpers
-
-This addon does **not**:
-
-* Provide a prismic.io API endpoint for testing 
+* `prismic` service to query a prismic.io repository
+* `as-text` and `as-html` template helpers to display prismic.io documents fields
+* `PrismicJS` and `PrismicDOM` global variables (imported from the [prismic.io Javascript development kit](https://github.com/prismicio/prismic-javascript))
 
 ## Usage
 
@@ -34,55 +28,39 @@ module.exports = function(environment) {
 
     prismic: {
       apiEndpoint: 'https://<your_repository>.prismic.io/api/v2'
+      // accessToken: '<your_private_repository_access_token_if_needed>'
     }
   }
 }
 ``` 
 
-In your route, controller or component, inject `prismic` service:
-
-```
-// routes/articles.js
-
-// ... imports
-import { inject as service } from '@ember/service';
-
-export default Route.extend({
-
-  prismic: service(),
-
-  // ... route configuration
-
-});
-``` 
-
-Call the `prismic` service:
+In your route, controller or component, inject and call the `prismic` service:
 
 ```
 // routes/articles.js
 
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
-import fetch from 'ember-fetch/ajax';
-import config from '../config/environment';
 
 export default Route.extend({
   prismic: service(),
 
   model() {
-    return this.get('prismic').masterRef().then(ref => {
-      const apiEndpoint = config.prismic.apiEndpoint;
-      const r = `ref=${ref}`;
-      const q = 'q=[[at(document.type, "article")]]';
-      const o = 'orderings=[document.last_publication_date desc]';
-      const url = `${apiEndpoint}/documents/search?${r}&${q}&${o}`;
-      return fetch(url).then(response => {
-        return response;
-      });
-    });
+    return this.get('prismic')
+      .getApi()
+      .then(api => api.query(
+        PrismicJS.Predicates.at('document.type', 'blog-post'),
+        {
+          fetchLinks: 'team-member.complete_name',
+          orderings: '[document.last_publication_date desc]',
+          page: 2,
+          pageSize: 2
+        }));
   }
 });
-``` 
+```
+
+See the [prismic.io Javascript development kit documentation](https://prismic.io/docs/javascript/getting-started/integrating-with-an-existing-javascript-project) for more usage. 
 
 ## Contribution
 

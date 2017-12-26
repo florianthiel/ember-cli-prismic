@@ -11,6 +11,7 @@ module.exports = {
   rules: {
   },
   globals: {
+    PrismicJS: true,
     PrismicDOM: true
   }
 };
