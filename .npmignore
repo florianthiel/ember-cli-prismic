@@ -14,3 +14,7 @@
 bower.json
 ember-cli-build.js
 testem.js
+
+#IntelliJ IDEA
+.idea
+*.iml
