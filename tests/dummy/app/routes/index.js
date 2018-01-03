@@ -11,9 +11,6 @@ export default Route.extend({
       .getApi()
       .then(api => api.query(
         Prismic.Predicates.at('document.type', 'book'), { orderings: '[document.last_publication_date desc]' })
-      ).then(response => {
-        console.log(response);
-        return response;
-      });
+      );
   }
 });
