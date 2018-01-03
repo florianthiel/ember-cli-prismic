@@ -18,10 +18,10 @@ module.exports = {
   },
 
   treeForVendor(defaultTree) {
-    let prismicJSLib = new Funnel('node_modules/prismic-javascript/dist/prismic-javascript.min.js');
+    let prismicJSLib = new Funnel('node_modules/prismic-javascript/dist');
     prismicJSLib = map(prismicJSLib, (content) => `if (typeof FastBoot === 'undefined') { ${content} }`);
 
-    let prismicDOMLib = new Funnel('node_modules/prismic-dom/dist/prismic-dom.min.js');
+    let prismicDOMLib = new Funnel('node_modules/prismic-dom/dist');
     prismicDOMLib = map(prismicDOMLib, (content) => `if (typeof FastBoot === 'undefined') { ${content} }`);
 
     return new mergeTrees([defaultTree, prismicJSLib, prismicDOMLib]);
