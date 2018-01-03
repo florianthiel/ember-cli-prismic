@@ -2,7 +2,9 @@
 module.exports = {
   description: 'Addon installation',
 
-  afterInstall(options) {
+  normalizeEntityName() {},
+
+  beforeInstall(options) {
     return this.addPackagesToProject([
       { name: 'prismic-javascript' },
       { name: 'prismic-dom' }
