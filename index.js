@@ -10,17 +10,31 @@ module.exports = {
   name: 'ember-cli-prismic',
 
   treeForVendor(defaultTree) {
+    let nodeFetchTree = new Funnel('');
+
     let prismicJSTree = new Funnel(path.dirname(require.resolve('prismic-javascript/dist/prismic-javascript.js')), {
       files: ['prismic-javascript.js'],
       destDir: 'prismic'
     });
-    //prismicJSTree = map(prismicJSTree, (content) => `if (typeof FastBoot === 'undefined') { ${content} }`);
+    prismicJSTree = stringReplace(prismicJSTree, {
+      files: ['prismic-javascript.js'],
+      patterns: [{
+        match: /typeof module === 'object'/g,
+        replacement: 'false'
+      }]
+    });
 
     let prismicDOMTree = new Funnel(path.dirname(require.resolve('prismic-dom/dist/prismic-dom.js')), {
       files: ['prismic-dom.js'],
       destDir: 'prismic'
     });
-    //prismicDOMTree = map(prismicDOMTree, (content) => `if (typeof FastBoot === 'undefined') { ${content} }`);
+    prismicDOMTree  = stringReplace(prismicDOMTree, {
+      files: ['prismic-dom.js'],
+      patterns: [{
+        match: /typeof module === 'object'/g,
+        replacement: 'false'
+      }]
+    });
 
     return new mergeTrees([prismicJSTree, prismicDOMTree, defaultTree]);
   },
@@ -28,6 +42,8 @@ module.exports = {
   included: function(app, parentAddon) {
     this._super.included.apply(this, arguments);
     const target = (parentAddon || app);
+
+    target.import('');
 
     // prismic-javascript
     target.import('vendor/prismic/prismic-javascript.js');
