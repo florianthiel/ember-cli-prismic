@@ -4,6 +4,10 @@
 
     return {
       'default': PrismicJS,
+      'Experiments': PrismicJS.Experiments,
+      'Predicates': PrismicJS.Predicates,
+      'api': PrismicJS.api,
+      'getApi': PrismicJS.getApi,
       __esModule: true,
     };
   }
